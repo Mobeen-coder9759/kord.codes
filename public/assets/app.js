@@ -417,7 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
             turnstileBox.hidden = false;
             widgetId = window.turnstile.render(turnstileBox, {
               sitekey,
-              action: 'logicweave_contact',
+              action: 'kord_contact', // Updated to match backend security settings
               size: window.innerWidth < 440 ? 'compact' : 'normal',
               'expired-callback': () => showFeedback('Verification expired. Please try again.'),
               'error-callback': () => showFeedback('Verification could not load. Please retry.')
@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
         email: fd.get('email'),
         message: fd.get('message'),
         topics: fd.getAll('topics'),
-        source: 'logic-weave-website',
+        source: 'kord-website',
         submittedAt: new Date().toISOString(),
         turnstileToken: token
       };
