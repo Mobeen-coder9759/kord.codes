@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "kord-site",
+  "name": "kord",
   "main": "src/worker.js",
   "compatibility_date": "2026-10-30",
   "assets": {
@@ -8,11 +8,18 @@
     "binding": "ASSETS",
     "run_worker_first": ["/api/*"]
   },
-  "ratelimits": [
-    {
-      "name": "CONTACT_RATE_LIMITER",
-      "namespace_id": "1001",
-      "simple": { "limit": 5, "period": 60 }
+  "ratelimit": {
+    "name": "CONTACT_RATE_LIMITER",
+    "namespace_id": "1001",
+    "simple": {
+      "limit": 5,
+      "period": 60
     }
-  ]
+  },
+  "vars": {
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAF5-5A7u8weUMmIr",
+    "TURNSTILE_EXPECTED_HOSTNAMES": "kord.kord-dev.workers.dev,kord.codes",
+    "PUBLIC_ORIGINS": "https://kord.kord-dev.workers.dev,https://kord.codes",
+    "N8N_ALLOWED_HOST": "itsmsquare.me"
+  }
 }
