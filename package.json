@@ -1,0 +1,13 @@
+{
+  "name": "logic-weave-cloudflare-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Logic Weave static website and secure Cloudflare Worker contact API",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test"
+  },
+  "devDependencies": { "wrangler": "^4.36.0" }
+}
