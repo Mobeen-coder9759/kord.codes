@@ -18,8 +18,8 @@
   },
   "vars": {
     "TURNSTILE_SITE_KEY": "0x4AAAAAAF5-5A7u8weUMmIr",
-    "TURNSTILE_EXPECTED_HOSTNAMES": "logic-weave-site.kord-dev.workers.dev,kord.codes",
-    "PUBLIC_ORIGINS": "https://logic-weave-site.kord-dev.workers.dev,https://kord.codes",
+    "TURNSTILE_EXPECTED_HOSTNAMES": "kord.kord-dev.workers.dev,kord.codes",
+    "PUBLIC_ORIGINS": "https://kord.kord-dev.workers.dev,https://kord.codes",
     "N8N_ALLOWED_HOST": "itsmsquare.me"
   }
 }
