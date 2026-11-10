@@ -137,15 +137,24 @@ export async function forwardLead(fetchImpl, settings, lead) {
     method: 'POST', 
     headers, 
     body: JSON.stringify(lead),
-    // Cloudflare edge strictly requires 'manual' or 'follow' instead of 'error'
     redirect: 'manual', 
     signal: AbortSignal.timeout(12000)
   });
   
-  if (!response.ok || !String(response.headers.get('content-type') || '').toLowerCase().includes('application/json')) {
+  const contentType = String(response.headers.get('content-type') || '').toLowerCase();
+  
+  // DEBUG LOGGING: If it fails, log exactly what the server responded with
+  if (!response.ok || !contentType.includes('application/json')) {
+    const errorText = await response.text();
+    console.error(`Webhook blocked! Status: ${response.status}. Content-Type: ${contentType}. Body preview: ${errorText.substring(0, 150)}`);
     return false;
   }
+  
   const result = await readBoundedJSON(response.body, MAX_REPLY_BYTES);
+  if (result?.success !== true) {
+    console.error(`Webhook returned JSON, but success was not true: ${JSON.stringify(result)}`);
+  }
+  
   return result?.success === true;
 }
 
