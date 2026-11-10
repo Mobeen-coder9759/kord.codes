@@ -26,5 +26,6 @@
     "TURNSTILE_EXPECTED_HOSTNAMES": "kord.kord-dev.workers.dev,kord.codes",
     "PUBLIC_ORIGINS": "https://kord.kord-dev.workers.dev,https://kord.codes",
     "N8N_ALLOWED_HOST": "itsmsquare.me"
+    "CF_ACCESS_CLIENT_SECRET": "cfast_yEbrrsFknefvfPH1zKiBAzybjJE5LWLXF9pQDTKIf431dcd0"
   }
 }
