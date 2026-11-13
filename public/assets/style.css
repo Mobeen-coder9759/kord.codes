@@ -1707,28 +1707,39 @@ textarea.field { flex: 1; min-height: 100px; max-height: 190px; resize: none; }
 }
 
 @media (min-width: 768px) {
-  /* Panel scrolls instead of clipping if content is taller than the screen */
+  /* Panel scrolls vertically instead of clipping */
   #contact.panel {
     overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior-y: contain;
   }
+
+  /* Stage grows with its content and can't shrink to the screen height */
   #contact .contact-stage {
+    flex: none;
     height: auto;
     min-height: 100%;
   }
+
   #contact .contact-grid {
     flex: none;
     min-height: auto;
   }
 
-  /* Card grows with its content */
   #contact .contact-card-new {
     height: auto;
     min-height: max-content;
     padding-bottom: 2rem;
   }
 
-  /* Footer sits below the grid with a gap */
   #contact .site-footer {
-    margin-top: 3rem;
+    margin-top: 1.5rem;
+    margin-bottom: 20px;
   }
+}
+
+/* Optional: tighten the form on short laptop screens so more fits */
+@media (min-width: 768px) and (max-height: 800px) {
+  #contact .contact-form { gap: 10px; }
+  #contact textarea.field { min-height: 70px; }
 }
