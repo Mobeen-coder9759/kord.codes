@@ -361,12 +361,12 @@
           </button>
           <button class="flow-tab" role="tab" aria-selected="false" type="button">
             <span class="tab-avatar">EC</span>
-            <span class="tab-meta"><strong>Emily Carter</strong><small>Voice scheduling</small></span>
+            <span class="tab-meta"><strong>Ellie Farmen</strong><small>Voice scheduling</small></span>
             <span class="tab-progress"></span>
           </button>
           <button class="flow-tab" role="tab" aria-selected="false" type="button">
             <span class="tab-avatar">SW</span>
-            <span class="tab-meta"><strong>Sarah Woods</strong><small>Inbound Calls</small></span>
+            <span class="tab-meta"><strong>Sarah Adams</strong><small>Inbound Calls</small></span>
             <span class="tab-progress"></span>
           </button>
           <button class="flow-tab" role="tab" aria-selected="false" type="button">
@@ -393,10 +393,10 @@
           <div class="tech-circle">REST &amp; Webhooks</div>
           <div class="tech-circle">OpenAI API</div>
           <div class="tech-circle">Vapi Voice AI</div>
-          <div class="tech-circle">Cloudinary Media</div>
-          <div class="tech-circle">Docker Containers</div>
+          <div class="tech-circle">Lead Qualification</div>
+          <div class="tech-circle">RAG</div>
           <div class="tech-circle">Vector DBs</div>
-          <div class="tech-circle">Claude API</div>
+          <div class="tech-circle">Social Media Automation</div>
           <div class="tech-circle">AI Voice Agents</div>
           <div class="tech-circle">CRM Dashboards</div>
         </div>
@@ -437,9 +437,6 @@
             </button>
             <button class="faq-chip" type="button" data-answer="Any business with repeatable manual work. Clinics, agencies and service teams are a great fit. If a person does it the same way every time, we can probably automate it.">
               <span class="chip-num">08</span><span class="chip-text">Which businesses do you work with?</span>
-            </button>
-            <button class="faq-chip" type="button" data-answer="Absolutely. We build workflows in modular pieces, so adding a step, a new integration or another channel later is quick and doesn’t mean starting over.">
-              <span class="chip-num">09</span><span class="chip-text">Can I make changes later?</span>
             </button>
             <button class="faq-chip" type="button" data-answer="Every workflow runs with automated logs and monitoring, so issues get caught early. We keep credentials out of the workflows, and we can self-host with Docker if you need your data to stay put.">
               <span class="chip-num">10</span><span class="chip-text">What about security and support?</span>
@@ -495,9 +492,14 @@
                 <label class="topic"><input type="checkbox" name="topics" value="Custom" /><span>Custom</span></label>
               </div>
 
+              
               <div class="field-row">
                 <input class="field" type="text" name="name" placeholder="Your name" maxlength="100" autocomplete="name" required />
                 <input class="field" type="email" name="email" placeholder="Business email" maxlength="254" autocomplete="email" required />
+              </div>
+              <div class="field-row">
+                <input class="field" type="text" name="city" placeholder="City" maxlength="100" autocomplete="address-level2" required />
+                <input class="field" type="tel" name="phone" placeholder="Phone number" maxlength="20" autocomplete="tel" required />
               </div>
               <textarea class="field" name="message" rows="4" maxlength="3000" placeholder="Describe your biggest manual bottleneck..."></textarea>
 
