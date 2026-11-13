@@ -1,5 +1,5 @@
 /* =========================================================
-   Logic Weave - Light Theme & Radial Gradient Styles
+   Kord - Light Theme & Radial Gradient Styles
    ========================================================= */
 
 :root {
@@ -1699,3 +1699,36 @@ textarea.field { flex: 1; min-height: 100px; max-height: 190px; resize: none; }
 .star-fill-100 { --fill: 100%; }
 .star-fill-92 { --fill: 92%; }
 .star-fill-89 { --fill: 89%; }
+
+/* Contact: let the form grow with the new fields, footer stays below */
+#contact .contact-form .run-btn {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  /* Panel scrolls instead of clipping if content is taller than the screen */
+  #contact.panel {
+    overflow-y: auto;
+  }
+  #contact .contact-stage {
+    height: auto;
+    min-height: 100%;
+  }
+  #contact .contact-grid {
+    flex: none;
+    min-height: auto;
+  }
+
+  /* Card grows with its content */
+  #contact .contact-card-new {
+    height: auto;
+    min-height: max-content;
+    padding-bottom: 2rem;
+  }
+
+  /* Footer sits below the grid with a gap */
+  #contact .site-footer {
+    margin-top: 3rem;
+  }
+}
