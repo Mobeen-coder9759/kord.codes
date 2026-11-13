@@ -467,6 +467,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const payload = {
         name: fd.get('name'),
         email: fd.get('email'),
+        phone: fd.get('phone'),
+        city: fd.get('city'),
         message: fd.get('message'),
         topics: fd.getAll('topics'),
         source: 'kord-website',
