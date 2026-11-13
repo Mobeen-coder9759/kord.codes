@@ -1,5 +1,5 @@
 /* =========================================================
-   Logic Weave - Core Interactive Logic & Scroll Routing
+   Kord - Core Interactive Logic & Scroll Routing
    ========================================================= */
 
 // Contact submissions go only to the same-origin Cloudflare Pages Function: /api/contact
@@ -417,6 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
             turnstileBox.hidden = false;
             widgetId = window.turnstile.render(turnstileBox, {
               sitekey,
+              appearance: 'interaction-only', // <-- To hide the cloudfare shit
               action: 'kord_contact', // Updated to match backend security settings
               size: window.innerWidth < 440 ? 'compact' : 'normal',
               'expired-callback': () => showFeedback('Verification expired. Please try again.'),
