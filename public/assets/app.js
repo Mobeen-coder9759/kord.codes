@@ -388,9 +388,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let localTestMode = false;
     let useTurnstile = false;
 
-    function showFeedback(message) {
+    function showFeedback(message, onClick) {
       feedback.textContent = message || '';
       feedback.hidden = !message;
+      // Optional click handler (used by the "Click here to retry" message)
+      feedback.onclick = onClick || null;
+      feedback.style.cursor = onClick ? 'pointer' : '';
     }
     function resetLog() {
       steps.forEach(s => { s.className = 'exec-step'; });
@@ -407,46 +410,108 @@ document.addEventListener('DOMContentLoaded', () => {
       submitButton.disabled = false;
       if (!localTestMode) showFeedback('');
     }
+    let turnstileLoadPromise = null;
+    let turnstileRetries = 0;
+
+    function resetTurnstileWidget() {
+      if (useTurnstile && widgetId !== null && window.turnstile) {
+        try {
+          window.turnstile.reset(widgetId);
+        } catch (_) {}
+      }
+    }
+
     function loadTurnstile(sitekey) {
-      return new Promise((resolve, reject) => {
+      if (turnstileLoadPromise) return turnstileLoadPromise;
+
+      turnstileLoadPromise = new Promise((resolve, reject) => {
+        const renderWidget = () => {
+          window.turnstile.ready(() => {
+            try {
+              turnstileBox.hidden = false;
+              if (widgetId !== null) {
+                window.turnstile.remove(widgetId);
+                widgetId = null;
+              }
+              widgetId = window.turnstile.render(turnstileBox, {
+                sitekey,
+                appearance: 'interaction-only',
+                action: 'kord_contact',
+                size: window.innerWidth < 440 ? 'compact' : 'normal',
+                callback: () => {
+                  turnstileRetries = 0;
+                  showFeedback('');
+                },
+                'expired-callback': () => {
+                  showFeedback('Verification expired. Resetting check...');
+                  resetTurnstileWidget();
+                },
+                'error-callback': (errorCode) => {
+                  // Auto-retry once on transient client/network handshake errors (e.g. 300010)
+                  if (turnstileRetries < 1) {
+                    turnstileRetries += 1;
+                    setTimeout(resetTurnstileWidget, 1200);
+                    return;
+                  }
+                  showFeedback('Verification could not load. Click here to retry.', () => {
+                    turnstileRetries = 0;
+                    showFeedback('Retrying verification...');
+                    resetTurnstileWidget();
+                  });
+                }
+              });
+              useTurnstile = true;
+              resolve();
+            } catch (error) {
+              reject(error);
+            }
+          });
+        };
+
+        if (window.turnstile) {
+          renderWidget();
+          return;
+        }
+
         const script = document.createElement('script');
         script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
         script.async = true;
-        script.onload = () => {
-          try {
-            turnstileBox.hidden = false;
-            widgetId = window.turnstile.render(turnstileBox, {
-              sitekey,
-              appearance: 'interaction-only', // <-- To hide the cloudfare shit
-              action: 'kord_contact', // Updated to match backend security settings
-              size: window.innerWidth < 440 ? 'compact' : 'normal',
-              'expired-callback': () => showFeedback('Verification expired. Please try again.'),
-              'error-callback': () => showFeedback('Verification could not load. Please retry.')
-            });
-            useTurnstile = true;
-            resolve();
-          } catch (error) { reject(error); }
+        script.defer = true;
+        script.onload = renderWidget;
+        script.onerror = () => {
+          turnstileLoadPromise = null;
+          reject(new Error('Turnstile unavailable'));
         };
-        script.onerror = () => reject(new Error('Turnstile unavailable'));
         document.head.appendChild(script);
       });
+
+      return turnstileLoadPromise;
     }
+
     (async () => {
       try {
         const response = await fetch('/api/config', { cache: 'no-store' });
         if (!response.ok) throw new Error('Configuration unavailable');
         const config = await response.json();
+
         if (!config.formEnabled) {
           showFeedback('Contact form is not connected yet. Please check again soon.');
           return;
         }
+
+        // Always enable the form UI & submit button once config confirms formEnabled
+        enableForm();
+
         localTestMode = config.localTestMode === true;
         if (localTestMode) {
           showFeedback('LOCAL TEST MODE: submissions will not be delivered.');
-          enableForm();
         } else if (typeof config.turnstileSiteKey === 'string' && config.turnstileSiteKey) {
-          await loadTurnstile(config.turnstileSiteKey);
-          enableForm();
+          try {
+            await loadTurnstile(config.turnstileSiteKey);
+          } catch (err) {
+            useTurnstile = false;
+            showFeedback('Security verification could not load on this network. Please retry or check connection.');
+          }
         } else {
           showFeedback('Security verification is not configured yet.');
         }
